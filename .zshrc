@@ -2,7 +2,8 @@
 # 🚀 Core Configuration
 # ----------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"  # Try "powerlevel10k" for a rich prompt
+# ZSH_THEME="robbyrussell"  
+ZSH_THEME="powerlevel10k/powerlevel10k" # for a rich prompt
 
 # Load Oh My Zsh
 plugins=(git docker docker-compose kubectl terraform z)
@@ -27,6 +28,7 @@ HYPHEN_INSENSITIVE="true"       # Treat - and _ the same
 setopt AUTO_CD                  # `cd dir` => just type dir
 setopt AUTO_PUSHD               # Automatically push dirs into stack
 setopt PUSHD_IGNORE_DUPS        # Avoid duplicate dirs in stack
+setopt NO_CASE_GLOB             # Case-insensitive globbing (e.g., ls *.JPG)
 
 # ----------------------------------------
 # 🧩 Dev Tool Completions & Aliases
@@ -55,7 +57,6 @@ alias dcd="docker-compose down"
 alias dcb="docker-compose build"
 
 # z - directory jumping
-# Jump around recent directories with `z <partial-path>`
 [[ -f $ZSH/plugins/z/z.plugin.zsh ]] && source $ZSH/plugins/z/z.plugin.zsh
 
 # ----------------------------------------
@@ -91,9 +92,12 @@ export EDITOR="code --wait"   # VS Code as the default editor
 # Autosuggestions (gray ghost text from history)
 [[ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# Fancier prompt (optional)
-# Consider installing and switching to powerlevel10k:
-# https://github.com/romkatv/powerlevel10k#oh-my-zsh
+# Optional: Fancier prompt with powerlevel10k
+# To install:
+#   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+#   Set ZSH_THEME="powerlevel10k/powerlevel10k" above
+#   Run: p10k configure
+alias p10kconfig="p10k configure"
 
 # ----------------------------------------
 # 🧪 Useful Aliases
@@ -104,10 +108,9 @@ alias reload!="source ~/.zshrc"
 
 # Git shortcuts
 alias gs="git status"
-alias ga="git add"
-alias gc="git commit -v"
+alias gad="git add ."
+alias gc="git commit -m"
 alias gp="git push"
-alias gl="git pull --rebase"
 alias gco="git checkout"
 alias gb="git branch"
 
