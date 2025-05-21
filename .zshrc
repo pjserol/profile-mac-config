@@ -1,128 +1,84 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Set the path to Oh My Zsh
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="robbyrussell"  # You can change to "agnoster" or "powerlevel10k" for a fancier prompt
 
-# Path to your oh-my-zsh installation.
-export ZSH="/Users/pjserol/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+# Plugins: You can add more (like zsh-autosuggestions and zsh-syntax-highlighting) below
 plugins=(git docker docker-compose)
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
+# --------------------------------------------------
+# 🧠 History Management
+# --------------------------------------------------
+HISTSIZE=10000
+SAVEHIST=10000
+setopt HIST_IGNORE_ALL_DUPS     # Don't store duplicates
+setopt INC_APPEND_HISTORY       # Write history immediately
+setopt SHARE_HISTORY            # Share history across all sessions
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# --------------------------------------------------
+# ✅ Usability Enhancements
+# --------------------------------------------------
+ENABLE_CORRECTION="true"        # Fix typos in commands
+COMPLETION_WAITING_DOTS="true"  # Show dots while completing
+HYPHEN_INSENSITIVE="true"       # _ and - treated the same
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# Autocompletioin for kubectl
+# --------------------------------------------------
+# 🧩 Command Line Tools & Completion
+# --------------------------------------------------
+# Kubectl autocomplete
 source <(kubectl completion zsh)
+alias k="kubectl"
 
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/pjserol/DEVTOOLS/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/pjserol/DEVTOOLS/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/pjserol/DEVTOOLS/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/pjserol/DEVTOOLS/google-cloud-sdk/completion.zsh.inc'; fi
-export PATH="/usr/local/opt/mysql-client/bin:$PATH"
-
-
-# Autocompletion for helm
+# Helm autocomplete
 source <(helm completion zsh)
 
-# Highlights commands
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Terraform autocomplete (if installed via tfenv or manually)
+[[ -f ~/.terraform.d/autocomplete/zsh_autocomplete.sh ]] && source ~/.terraform.d/autocomplete/zsh_autocomplete.sh
+alias tf="terraform"
 
-# Customise prompt
-PS1="%F{cyan}%n@%m %F{green}%~ %F{yellow}%# %F{reset}"
+# Google Cloud SDK
+[[ -f "$HOME/DEVTOOLS/google-cloud-sdk/path.zsh.inc" ]] && source "$HOME/DEVTOOLS/google-cloud-sdk/path.zsh.inc"
+[[ -f "$HOME/DEVTOOLS/google-cloud-sdk/completion.zsh.inc" ]] && source "$HOME/DEVTOOLS/google-cloud-sdk/completion.zsh.inc"
 
+# MySQL client in path
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
-# Added by Windsurf
-export PATH="/Users/pjserol/.codeium/windsurf/bin:$PATH"
+# Codeium (Windsurf) binary
+export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+
+# NVM (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
+[[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+
+# --------------------------------------------------
+# 🔤 Language & Editor
+# --------------------------------------------------
+export LANG="en_US.UTF-8"
+export EDITOR="code --wait"
+
+# --------------------------------------------------
+# 🎨 Visual & Prompt Enhancements
+# --------------------------------------------------
+# Syntax highlighting
+[[ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Autosuggestions (ghost text from history)
+[[ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# Custom prompt (optional – for minimal clean look)
+# If using powerlevel10k, comment this out and install powerlevel10k via brew or manually
+PS1="%F{cyan}%n@%m %F{green}%~ %F{yellow}%# %f"
+
+# --------------------------------------------------
+# ⚡ Useful Aliases
+# --------------------------------------------------
+alias zshconfig="code ~/.zshrc"
+alias ohmyzsh="code ~/.oh-my-zsh"
+alias kctx="kubectl config current-context"
+alias kns="kubectl config set-context --current --namespace"
+
+# Avoid duplicate PATH entries
+typeset -U path PATH
+
