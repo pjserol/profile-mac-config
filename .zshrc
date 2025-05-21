@@ -1,84 +1,125 @@
-# Set the path to Oh My Zsh
+# ----------------------------------------
+# 🚀 Core Configuration
+# ----------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"  # You can change to "agnoster" or "powerlevel10k" for a fancier prompt
+ZSH_THEME="robbyrussell"  # Try "powerlevel10k" for a rich prompt
 
-# Plugins: You can add more (like zsh-autosuggestions and zsh-syntax-highlighting) below
-plugins=(git docker docker-compose)
+# Load Oh My Zsh
+plugins=(git docker docker-compose kubectl terraform z)
 
 source $ZSH/oh-my-zsh.sh
 
-# --------------------------------------------------
+# ----------------------------------------
 # 🧠 History Management
-# --------------------------------------------------
+# ----------------------------------------
 HISTSIZE=10000
 SAVEHIST=10000
-setopt HIST_IGNORE_ALL_DUPS     # Don't store duplicates
-setopt INC_APPEND_HISTORY       # Write history immediately
-setopt SHARE_HISTORY            # Share history across all sessions
+setopt HIST_IGNORE_ALL_DUPS     # Avoid duplicates
+setopt INC_APPEND_HISTORY       # Write immediately
+setopt SHARE_HISTORY            # Sync across sessions
 
-# --------------------------------------------------
+# ----------------------------------------
 # ✅ Usability Enhancements
-# --------------------------------------------------
-ENABLE_CORRECTION="true"        # Fix typos in commands
-COMPLETION_WAITING_DOTS="true"  # Show dots while completing
-HYPHEN_INSENSITIVE="true"       # _ and - treated the same
+# ----------------------------------------
+ENABLE_CORRECTION="true"        # Auto-fix minor typos
+COMPLETION_WAITING_DOTS="true"  # Visual feedback on completion
+HYPHEN_INSENSITIVE="true"       # Treat - and _ the same
+setopt AUTO_CD                  # `cd dir` => just type dir
+setopt AUTO_PUSHD               # Automatically push dirs into stack
+setopt PUSHD_IGNORE_DUPS        # Avoid duplicate dirs in stack
 
-# --------------------------------------------------
-# 🧩 Command Line Tools & Completion
-# --------------------------------------------------
-# Kubectl autocomplete
-source <(kubectl completion zsh)
+# ----------------------------------------
+# 🧩 Dev Tool Completions & Aliases
+# ----------------------------------------
+# kubectl
 alias k="kubectl"
+alias kgp="kubectl get pods"
+alias kgs="kubectl get svc"
+alias kctx="kubectl config current-context"
+alias kns="kubectl config set-context --current --namespace"
+[[ $(which kubectl) ]] && source <(kubectl completion zsh)
 
-# Helm autocomplete
-source <(helm completion zsh)
+# Helm
+alias h="helm"
+[[ $(which helm) ]] && source <(helm completion zsh)
 
-# Terraform autocomplete (if installed via tfenv or manually)
-[[ -f ~/.terraform.d/autocomplete/zsh_autocomplete.sh ]] && source ~/.terraform.d/autocomplete/zsh_autocomplete.sh
+# Terraform
 alias tf="terraform"
+[[ -f ~/.terraform.d/autocomplete/zsh_autocomplete.sh ]] && source ~/.terraform.d/autocomplete/zsh_autocomplete.sh
 
+# Docker
+alias d="docker"
+alias dps="docker ps"
+alias dcu="docker-compose up"
+alias dcd="docker-compose down"
+alias dcb="docker-compose build"
+
+# z - directory jumping
+# Jump around recent directories with `z <partial-path>`
+[[ -f $ZSH/plugins/z/z.plugin.zsh ]] && source $ZSH/plugins/z/z.plugin.zsh
+
+# ----------------------------------------
+# 🧰 SDKs & Tools
+# ----------------------------------------
 # Google Cloud SDK
 [[ -f "$HOME/DEVTOOLS/google-cloud-sdk/path.zsh.inc" ]] && source "$HOME/DEVTOOLS/google-cloud-sdk/path.zsh.inc"
 [[ -f "$HOME/DEVTOOLS/google-cloud-sdk/completion.zsh.inc" ]] && source "$HOME/DEVTOOLS/google-cloud-sdk/completion.zsh.inc"
 
-# MySQL client in path
+# MySQL client
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
-# Codeium (Windsurf) binary
+# Codeium (Windsurf)
 export PATH="$HOME/.codeium/windsurf/bin:$PATH"
 
-# NVM (Node Version Manager)
+# NVM
 export NVM_DIR="$HOME/.nvm"
 [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 [[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
 
-# --------------------------------------------------
-# 🔤 Language & Editor
-# --------------------------------------------------
+# ----------------------------------------
+# 🌍 Language & Editor
+# ----------------------------------------
 export LANG="en_US.UTF-8"
-export EDITOR="code --wait"
+export EDITOR="code --wait"   # VS Code as the default editor
 
-# --------------------------------------------------
-# 🎨 Visual & Prompt Enhancements
-# --------------------------------------------------
+# ----------------------------------------
+# 🎨 Visual Enhancements
+# ----------------------------------------
 # Syntax highlighting
 [[ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Autosuggestions (ghost text from history)
+# Autosuggestions (gray ghost text from history)
 [[ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# Custom prompt (optional – for minimal clean look)
-# If using powerlevel10k, comment this out and install powerlevel10k via brew or manually
-PS1="%F{cyan}%n@%m %F{green}%~ %F{yellow}%# %f"
+# Fancier prompt (optional)
+# Consider installing and switching to powerlevel10k:
+# https://github.com/romkatv/powerlevel10k#oh-my-zsh
 
-# --------------------------------------------------
-# ⚡ Useful Aliases
-# --------------------------------------------------
+# ----------------------------------------
+# 🧪 Useful Aliases
+# ----------------------------------------
 alias zshconfig="code ~/.zshrc"
 alias ohmyzsh="code ~/.oh-my-zsh"
-alias kctx="kubectl config current-context"
-alias kns="kubectl config set-context --current --namespace"
+alias reload!="source ~/.zshrc"
 
-# Avoid duplicate PATH entries
+# Git shortcuts
+alias gs="git status"
+alias ga="git add"
+alias gc="git commit -v"
+alias gp="git push"
+alias gl="git pull --rebase"
+alias gco="git checkout"
+alias gb="git branch"
+
+# Directory aliases
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+# Misc
+alias l="ls -lh"
+alias la="ls -A"
+alias ll="ls -lAh"
+
+# Ensure no duplicate PATH entries
 typeset -U path PATH
-
