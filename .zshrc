@@ -149,11 +149,12 @@ alias ll="ls -lAh"
 alias json="jq '.'"
 
 # 🕒 Show timestamps in `history`
+setopt EXTENDED_HISTORY
 export HISTTIMEFORMAT="%F %T "
+alias htime='fc -li -20'
 
 # 📁 Fuzzy jump to recent dirs (requires `fzf`)
 alias cdh='dirs -v | fzf | cut -d" " -f2 | xargs -I{} cd "{}"'
-
 
 # Ensure no duplicate PATH entries
 typeset -U path PATH
