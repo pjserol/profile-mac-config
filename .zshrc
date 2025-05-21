@@ -145,5 +145,15 @@ alias l="ls -lh"
 alias la="ls -A"
 alias ll="ls -lAh"
 
+# 📄 JSON pretty-print (requires `jq`)
+alias json="jq '.'"
+
+# 🕒 Show timestamps in `history`
+export HISTTIMEFORMAT="%F %T "
+
+# 📁 Fuzzy jump to recent dirs (requires `fzf`)
+alias cdh='dirs -v | fzf | cut -d" " -f2 | xargs -I{} cd "{}"'
+
+
 # Ensure no duplicate PATH entries
 typeset -U path PATH
