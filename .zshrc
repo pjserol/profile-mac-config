@@ -158,3 +158,6 @@ alias cdh='dirs -v | fzf | cut -d" " -f2 | xargs -I{} cd "{}"'
 
 # Ensure no duplicate PATH entries
 typeset -U path PATH
+
+# Load Powerlevel10k theme
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
