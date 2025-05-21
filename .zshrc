@@ -41,6 +41,27 @@ alias kctx="kubectl config current-context"
 alias kns="kubectl config set-context --current --namespace"
 [[ $(which kubectl) ]] && source <(kubectl completion zsh)
 
+# List contexts and switch interactively
+kswitch() {
+  local ctx
+  ctx=$(kubectl config get-contexts -o name | fzf)
+  if [[ -n $ctx ]]; then
+    kubectl config use-context "$ctx"
+    echo "Switched context to $ctx"
+  fi
+}
+
+# List namespaces and switch interactively
+kns-switch() {
+  local ns
+  ns=$(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n' | fzf)
+  if [[ -n $ns ]]; then
+    kubectl config set-context --current --namespace="$ns"
+    echo "Switched namespace to $ns"
+  fi
+}
+
+
 # Helm
 alias h="helm"
 [[ $(which helm) ]] && source <(helm completion zsh)
